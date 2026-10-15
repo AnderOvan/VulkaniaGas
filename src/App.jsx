@@ -15,6 +15,8 @@ import { Login } from './pages/Login';
 import { Registro } from './pages/Registro';
 import { Contacto } from './pages/Contacto';
 import { Productos } from './pages/Productos';
+import { AdminDashboard } from './pages/admin/AdminDashboard';
+
 
 export function App() {
   return (
@@ -32,6 +34,7 @@ export function App() {
             <Route path="/registro" element={<Registro />} />
             <Route path="/contacto" element={<Contacto />} />
             <Route path="/productos" element={<Productos />} />
+            <Route path="/admin" element={<AdminDashboard />} />
           </Routes>
         </main>
 
