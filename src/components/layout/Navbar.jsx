@@ -1,8 +1,10 @@
-// src/components/layout/Navbar.jsx
 import React from 'react';
 import { NavLink, Link } from 'react-router-dom';
+import { useCart } from '../../context/CartContext';
 
 export const Navbar = () => {
+  const { totalItems } = useCart();
+
   const linkStyle = ({ isActive }) => ({
     color: isActive ? '#FF3B00' : '#F5F5F8',
     fontWeight: isActive ? '700' : '500',
@@ -32,8 +34,40 @@ export const Navbar = () => {
           <NavLink to="/contacto" style={linkStyle}>Contacto</NavLink>
         </div>
 
-        {/* Botones de Autenticación */}
-        <div style={{ display: 'flex', gap: '0.8rem' }}>
+        {/* Carrito y Botones de Autenticación */}
+        <div style={{ display: 'flex', gap: '1rem', alignItems: 'center' }}>
+          {/* Botón de Carrito con Contador */}
+          <Link
+            to="/carrito"
+            style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '6px',
+              backgroundColor: '#0D0D11',
+              color: '#F5F5F8',
+              border: '1px solid #2A2A35',
+              padding: '0.5rem 0.8rem',
+              borderRadius: '6px',
+              textDecoration: 'none',
+              fontSize: '0.875rem',
+              fontWeight: '600'
+            }}
+          >
+            🛒
+            {totalItems > 0 && (
+              <span style={{
+                backgroundColor: '#FF3B00',
+                color: '#FFFFFF',
+                borderRadius: '50%',
+                padding: '2px 7px',
+                fontSize: '0.75rem',
+                fontWeight: 'bold'
+              }}>
+                {totalItems}
+              </span>
+            )}
+          </Link>
+
           <Link
             to="/login"
             style={{
@@ -48,6 +82,7 @@ export const Navbar = () => {
           >
             Iniciar Sesión
           </Link>
+
           <Link
             to="/registro"
             style={{
