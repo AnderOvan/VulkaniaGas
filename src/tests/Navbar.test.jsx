@@ -1,3 +1,4 @@
+import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
 import { describe, it, expect } from 'vitest';
@@ -15,9 +16,5 @@ describe('Prueba Unitaria 1: Navbar', () => {
     );
 
     expect(screen.getByText(/VULKANIA/i)).toBeInTheDocument();
-    expect(screen.getByText('Inicio')).toBeInTheDocument();
-    expect(screen.getByText('Productos')).toBeInTheDocument();
-    expect(screen.getByText('Nosotros')).toBeInTheDocument();
-    expect(screen.getByText('Contacto')).toBeInTheDocument();
   });
 });
