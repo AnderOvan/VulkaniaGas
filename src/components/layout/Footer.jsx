@@ -20,6 +20,7 @@ export const Footer = () => {
             <li><Link to="/productos" style={{ color: '#A0A0AB', textDecoration: 'none' }}>Catálogo de Cargas</Link></li>
             <li><Link to="/nosotros" style={{ color: '#A0A0AB', textDecoration: 'none' }}>Sobre Nosotros</Link></li>
             <li><Link to="/contacto" style={{ color: '#A0A0AB', textDecoration: 'none' }}>Atención al Cliente</Link></li>
+            <li><Link to="/admin" style={{ color: '#A0A0AB', textDecoration: 'none' }}>Acceso Administrativo</Link></li>
           </ul>
         </div>
 

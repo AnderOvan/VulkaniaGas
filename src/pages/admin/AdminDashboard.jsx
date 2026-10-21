@@ -1,11 +1,10 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { gasProducts } from '../../data/gasData';
-import './admin.css';
-
-const STOCK_CRITICO = 10;
+import { obtenerProductos, STOCK_CRITICO } from '../../data/productosStore';
+import './Admin.css';
 
 export const AdminDashboard = () => {
+  const gasProducts = obtenerProductos();
   const criticos = gasProducts.filter((p) => p.stock <= STOCK_CRITICO);
   const valorInventario = gasProducts.reduce((total, p) => total + p.precio * p.stock, 0);
 
