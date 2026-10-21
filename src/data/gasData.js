@@ -11,7 +11,7 @@ export const gasProducts = [
     categoria: 'Cilindros Completos',
     stock: 10,
     destacado: true,
-    imagen: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=500'
+    imagen: '/productos/gas-5kg.png'
   },
   {
     id: 'gas-11kg-comp',
@@ -21,7 +21,7 @@ export const gasProducts = [
     categoria: 'Cilindros Completos',
     stock: 8,
     destacado: true,
-    imagen: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=500'
+    imagen: '/productos/gas-11kg.png'
   },
   {
     id: 'gas-15kg-rec',
@@ -31,7 +31,7 @@ export const gasProducts = [
     categoria: 'Recargas',
     stock: 15,
     destacado: false,
-    imagen: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=500'
+    imagen: '/productos/gas-15kg.png'
   },
   {
     id: 'gas-45kg-comp',
@@ -41,7 +41,7 @@ export const gasProducts = [
     categoria: 'Cilindros Completos',
     stock: 5,
     destacado: true,
-    imagen: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=500'
+    imagen: '/productos/gas-45kg.png'
   },
   {
     id: 'regulador-gas',
@@ -51,6 +51,6 @@ export const gasProducts = [
     categoria: 'Accesorios',
     stock: 20,
     destacado: false,
-    imagen: 'https://images.unsplash.com/photo-1585338107529-13afc5f02586?w=500'
+    imagen: '/productos/regulador.png'
   }
 ];
