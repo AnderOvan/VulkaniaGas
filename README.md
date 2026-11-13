@@ -94,3 +94,16 @@ VulkaniaGas/
         ├── Navbar.test.jsx
         ├── Registro.test.jsx
         └── Contacto.test.jsx
+## 📂 Estructura del backend
+
+[ React + Vite (Puerto 5173) ]
+         │
+         ▼  Peticiones HTTP (JSON: GET, POST, PUT, DELETE)
+[ API Gateway (Puerto 8080) ]  ◄───(Consulta rutas)───► [ Eureka Server (Puerto 8761) ]
+         │                                                      ▲
+         ├──► [ ms-usuarios  (8081) ] ──(Se registra)───────────┤
+         ├──► [ ms-productos (8082) ] ──(Se registra)───────────┤
+         └──► [ ms-pedidos   (8083) ] ──(Se registra)───────────┘
+                    │
+                    ▼
+          [ Swagger UI (/swagger-ui.html) ] -> Documenta y prueba cada endpoint
