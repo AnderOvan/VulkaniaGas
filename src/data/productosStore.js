@@ -1,58 +1,8 @@
-// src/data/productosStore.js
-// Persistencia del catálogo en localStorage. Si aún no hay nada guardado,
-// se parte desde el catálogo base de gasData.js.
-import { gasProducts, CATEGORIAS } from './gasData';
+import { CATEGORIAS } from './gasData';
 
-export const STORAGE_KEY = 'vulkania_productos';
 export const STOCK_CRITICO = 10;
-
-// Categorías asignables a un producto (sin "Todos")
 export const CATEGORIAS_PRODUCTO = Object.values(CATEGORIAS).filter((c) => c !== CATEGORIAS.TODOS);
 
-export const obtenerProductos = () => {
-  try {
-    const raw = localStorage.getItem(STORAGE_KEY);
-    if (raw) {
-      const datos = JSON.parse(raw);
-      if (Array.isArray(datos)) return datos;
-    }
-  } catch {
-    // JSON corrupto o localStorage no disponible: se usa el catálogo base
-  }
-  return gasProducts;
-};
-
-export const guardarProductos = (lista) => {
-  localStorage.setItem(STORAGE_KEY, JSON.stringify(lista));
-  return lista;
-};
-
-export const restaurarProductos = () => {
-  localStorage.removeItem(STORAGE_KEY);
-  return gasProducts;
-};
-
-const slug = (texto) =>
-  texto
-    .toLowerCase()
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .replace(/[^a-z0-9]+/g, '-')
-    .replace(/^-+|-+$/g, '')
-    .slice(0, 40) || 'producto';
-
-export const generarIdProducto = (nombre, productos) => {
-  const base = slug(nombre);
-  let id = base;
-  let n = 2;
-  while (productos.some((p) => p.id === id)) {
-    id = `${base}-${n}`;
-    n += 1;
-  }
-  return id;
-};
-
-// Devuelve un objeto { campo: 'mensaje' }. Vacío = datos válidos.
 export const validarProducto = (datos, productos = [], idEditando = null) => {
   const errores = {};
   const nombre = (datos.nombre || '').trim();
@@ -90,37 +40,4 @@ export const validarProducto = (datos, productos = [], idEditando = null) => {
   }
 
   return errores;
-};
-
-// Normaliza los datos del formulario al formato del catálogo
-export const armarProducto = (datos, id) => ({
-  id,
-  nombre: datos.nombre.trim(),
-  descripcion: (datos.descripcion || '').trim(),
-  precio: Number(datos.precio),
-  categoria: datos.categoria,
-  peso: datos.peso.trim(),
-  stock: Number(datos.stock),
-  destacado: Boolean(datos.destacado),
-  imagen: (datos.imagen || '').trim()
-});
-
-export const agregarProducto = (datos) => {
-  const productos = obtenerProductos();
-  const nuevo = armarProducto(datos, generarIdProducto(datos.nombre, productos));
-  guardarProductos([...productos, nuevo]);
-  return nuevo;
-};
-
-export const actualizarProducto = (id, datos) => {
-  const productos = obtenerProductos();
-  const actualizado = armarProducto(datos, id);
-  guardarProductos(productos.map((p) => (p.id === id ? actualizado : p)));
-  return actualizado;
-};
-
-export const eliminarProducto = (id) => {
-  const productos = obtenerProductos().filter((p) => p.id !== id);
-  guardarProductos(productos);
-  return productos;
 };
