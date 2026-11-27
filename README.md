@@ -1,4 +1,3 @@
-```markdown
 # 🌋 Vulkania Gas Online - Plataforma E-Commerce Fullstack
 
 > **Asignatura:** DSY1104 - Desarrollo Fullstack  
