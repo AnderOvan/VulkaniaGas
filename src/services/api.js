@@ -74,4 +74,3 @@ export const leerMensaje = async (respuesta, porDefecto = 'Ocurrió un error.') 
     return porDefecto;
   }
 };
-

@@ -1,10 +1,27 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { obtenerProductos, STOCK_CRITICO } from '../../data/productosStore';
+import { STOCK_CRITICO } from '../../data/productosStore';
+import { apiFetch } from '../../services/api';
 import './Admin.css';
 
 export const AdminDashboard = () => {
-  const gasProducts = obtenerProductos();
+  const [gasProducts, setGasProducts] = useState([]);
+  const [error, setError] = useState('');
+
+  // Resumen calculado con los productos reales de MySQL
+  useEffect(() => {
+    const cargar = async () => {
+      try {
+        const res = await apiFetch('/productos');
+        if (!res.ok) throw new Error();
+        setGasProducts(await res.json());
+      } catch {
+        setError('No se pudo cargar el catálogo desde el servidor.');
+      }
+    };
+    cargar();
+  }, []);
+
   const criticos = gasProducts.filter((p) => p.stock <= STOCK_CRITICO);
   const valorInventario = gasProducts.reduce((total, p) => total + p.precio * p.stock, 0);
 
@@ -17,6 +34,8 @@ export const AdminDashboard = () => {
         </div>
         <Link to="/admin/productos" className="btn-vulkania">Gestionar productos</Link>
       </div>
+
+      {error && <div className="alert-vulkania admin-alert" role="alert">{error}</div>}
 
       <div className="admin-grid">
         <div className="card-vulkania">

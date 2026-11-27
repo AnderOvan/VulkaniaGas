@@ -52,7 +52,7 @@ export const Registro = () => {
     }
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const nuevosErrores = {};
 
@@ -80,9 +80,33 @@ export const Registro = () => {
 
     if (Object.keys(nuevosErrores).length > 0) {
       setErrores(nuevosErrores);
-    } else {
-      setErrores({});
-      setRegistroExitoso(true);
+      return;
+    }
+
+    setErrores({});
+
+    try {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:8080/api';
+      const response = await fetch(`${apiUrl}/usuarios/registro`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          nombre: formData.nombre,
+          rut: formData.rut,
+          email: formData.email,
+          password: formData.password
+        })
+      });
+
+      const data = await response.json();
+
+      if (response.ok) {
+        setRegistroExitoso(true);
+      } else {
+        setErrores({ general: data.mensaje || 'Error al registrar usuario' });
+      }
+    } catch (error) {
+      setErrores({ general: 'No se pudo conectar con el servidor de Vulkania Gas' });
     }
   };
 
@@ -100,6 +124,12 @@ export const Registro = () => {
           </div>
         ) : (
           <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.2rem' }}>
+            {errores.general && (
+              <div style={{ backgroundColor: 'rgba(255, 59, 0, 0.15)', border: '1px solid #FF3B00', color: '#FF3B00', padding: '0.7rem', borderRadius: '6px', fontSize: '0.85rem', textAlign: 'center' }}>
+                {errores.general}
+              </div>
+            )}
+
             <div>
               <label style={{ display: 'block', marginBottom: '0.3rem', fontSize: '0.875rem', color: '#A0A0AB' }}>Nombre Completo</label>
               <input
@@ -164,4 +194,4 @@ export const Registro = () => {
   );
 };
 
-export default Registro;
+export default Registro

@@ -1,3 +1,6 @@
+// src/components/RutaAdmin.jsx
+// Protege las vistas del panel: sin sesión -> login; con sesión pero sin rol ADMIN -> acceso denegado.
+// Es solo una barrera de interfaz: la seguridad real la aplica el backend (401/403) en cada petición.
 import React from 'react';
 import { Link, Navigate, useLocation } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';

@@ -1,3 +1,4 @@
+// src/tests/api.test.js
 // Pruebas del cliente de API: envío del token y tratamiento de la sesión inválida (IE3.3.2).
 import { describe, it, expect, beforeEach, afterEach, vi } from 'vitest';
 import { apiFetch, CLAVE_SESION, EVENTO_SESION_EXPIRADA, leerMensaje } from '../services/api';

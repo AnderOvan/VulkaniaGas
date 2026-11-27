@@ -1,15 +1,14 @@
 // src/pages/admin/AdminProductos.jsx
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   CATEGORIAS_PRODUCTO,
   STOCK_CRITICO,
-  obtenerProductos,
-  validarProducto,
-  agregarProducto,
-  actualizarProducto,
-  eliminarProducto
+  validarProducto
 } from '../../data/productosStore';
+import { apiFetch, leerMensaje } from '../../services/api';
 import './Admin.css';
+
+const RUTA = '/productos';
 
 const FORM_VACIO = {
   nombre: '',
@@ -23,7 +22,7 @@ const FORM_VACIO = {
 };
 
 const formatoCLP = (n) =>
-  n.toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
+  Number(n).toLocaleString('es-CL', { style: 'currency', currency: 'CLP', maximumFractionDigits: 0 });
 
 const estadoStock = (stock) => {
   if (stock === 0) return { clase: 'badge-danger', texto: 'Agotado' };
@@ -32,7 +31,7 @@ const estadoStock = (stock) => {
 };
 
 export const AdminProductos = () => {
-  const [productos, setProductos] = useState(obtenerProductos);
+  const [productos, setProductos] = useState([]);
   const [form, setForm] = useState(FORM_VACIO);
   const [editandoId, setEditandoId] = useState(null);
   const [mostrarForm, setMostrarForm] = useState(false);
@@ -40,6 +39,23 @@ export const AdminProductos = () => {
   const [mensaje, setMensaje] = useState('');
   const [busqueda, setBusqueda] = useState('');
   const [filtroCategoria, setFiltroCategoria] = useState('');
+
+  // 1. GET: Cargar productos desde MySQL (Spring Boot)
+  const cargarProductos = async () => {
+    try {
+      const response = await apiFetch(RUTA);
+      if (response.ok) {
+        const data = await response.json();
+        setProductos(data);
+      }
+    } catch (error) {
+      console.error('Error al cargar productos desde el backend:', error);
+    }
+  };
+
+  useEffect(() => {
+    cargarProductos();
+  }, []);
 
   const criticos = productos.filter((p) => p.stock <= STOCK_CRITICO);
 
@@ -78,7 +94,8 @@ export const AdminProductos = () => {
     setErrores({});
   };
 
-  const handleSubmit = (e) => {
+  // 2. POST y PUT: Crear o actualizar en MySQL
+  const handleSubmit = async (e) => {
     e.preventDefault();
     const nuevosErrores = validarProducto(form, productos, editandoId);
     if (Object.keys(nuevosErrores).length > 0) {
@@ -86,23 +103,53 @@ export const AdminProductos = () => {
       return;
     }
 
-    if (editandoId) {
-      actualizarProducto(editandoId, form);
-      setMensaje('Producto actualizado correctamente.');
-    } else {
-      agregarProducto(form);
-      setMensaje('Producto creado correctamente.');
+    const payload = {
+      ...form,
+      precio: Number(form.precio),
+      stock: Number(form.stock)
+    };
+
+    try {
+      if (editandoId) {
+        const res = await apiFetch(`${RUTA}/${editandoId}`, {
+          method: 'PUT',
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error(await leerMensaje(res, 'Error al actualizar el producto.'));
+        setMensaje('Producto actualizado correctamente.');
+      } else {
+        const res = await apiFetch(RUTA, {
+          method: 'POST',
+          body: JSON.stringify(payload)
+        });
+        if (!res.ok) throw new Error(await leerMensaje(res, 'Error al crear el producto.'));
+        setMensaje('Producto creado correctamente.');
+      }
+
+      await cargarProductos();
+      cerrarForm();
+    } catch (error) {
+      // TypeError = no hubo respuesta del servidor; cualquier otro error trae el mensaje del backend
+      setMensaje(error instanceof TypeError ? 'Error de conexión con el servidor al guardar el producto.' : error.message);
     }
-    setProductos(obtenerProductos());
-    cerrarForm();
   };
 
-  const handleEliminar = (producto) => {
+  // 3. DELETE: Eliminar producto de MySQL
+  const handleEliminar = async (producto) => {
     if (!window.confirm(`¿Eliminar "${producto.nombre}"? Esta acción no se puede deshacer.`)) return;
-    eliminarProducto(producto.id);
-    setProductos(obtenerProductos());
-    setMensaje('Producto eliminado.');
-    if (editandoId === producto.id) cerrarForm();
+
+    try {
+      const res = await apiFetch(`${RUTA}/${producto.id}`, {
+        method: 'DELETE'
+      });
+      if (!res.ok) throw new Error(await leerMensaje(res, 'Error al eliminar el producto.'));
+
+      await cargarProductos();
+      setMensaje('Producto eliminado.');
+      if (editandoId === producto.id) cerrarForm();
+    } catch (error) {
+      setMensaje(error instanceof TypeError ? 'Error de conexión al intentar eliminar el producto.' : error.message);
+    }
   };
 
   const campo = (name, label, props = {}) => (
@@ -112,7 +159,7 @@ export const AdminProductos = () => {
         id={`prod-${name}`}
         name={name}
         className="input-vulkania"
-        value={form[name]}
+        value={form[name] ?? ''}
         onChange={handleChange}
         {...props}
       />
@@ -177,13 +224,13 @@ export const AdminProductos = () => {
               name="descripcion"
               className="input-vulkania"
               rows={3}
-              value={form.descripcion}
+              value={form.descripcion ?? ''}
               onChange={handleChange}
             />
           </div>
 
           <label className="admin-check">
-            <input type="checkbox" name="destacado" checked={form.destacado} onChange={handleChange} />
+            <input type="checkbox" name="destacado" checked={Boolean(form.destacado)} onChange={handleChange} />
             Producto destacado
           </label>
 

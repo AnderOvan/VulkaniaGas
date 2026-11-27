@@ -1,8 +1,12 @@
+// src/data/productosStore.js
+// Constantes y validación de productos para el panel admin.
+// Los datos ya NO se guardan aquí: viven en MySQL y se consumen desde la API REST.
 import { CATEGORIAS } from './gasData';
 
 export const STOCK_CRITICO = 10;
 export const CATEGORIAS_PRODUCTO = Object.values(CATEGORIAS).filter((c) => c !== CATEGORIAS.TODOS);
 
+// Devuelve un objeto { campo: 'mensaje' }. Vacío = datos válidos.
 export const validarProducto = (datos, productos = [], idEditando = null) => {
   const errores = {};
   const nombre = (datos.nombre || '').trim();

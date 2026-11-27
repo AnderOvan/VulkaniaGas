@@ -1,8 +1,17 @@
 // src/components/layout/Navbar.jsx
 import React from 'react';
-import { NavLink, Link } from 'react-router-dom';
+import { NavLink, Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
 
 export const Navbar = () => {
+  const { usuario, esAdmin, cerrarSesion } = useAuth();
+  const navigate = useNavigate();
+
+  const salir = () => {
+    cerrarSesion();
+    navigate('/');
+  };
+
   const linkStyle = ({ isActive }) => ({
     color: isActive ? '#FF3B00' : '#F5F5F8',
     fontWeight: isActive ? '700' : '500',
@@ -32,36 +41,76 @@ export const Navbar = () => {
           <NavLink to="/contacto" style={linkStyle}>Contacto</NavLink>
         </div>
 
-        {/* Botones de Autenticación */}
-        <div style={{ display: 'flex', gap: '0.8rem' }}>
-          <Link
-            to="/login"
-            style={{
-              color: '#F5F5F8',
-              border: '1px solid #2A2A35',
-              padding: '0.5rem 1rem',
-              borderRadius: '6px',
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontWeight: '600'
-            }}
-          >
-            Iniciar Sesión
-          </Link>
-          <Link
-            to="/registro"
-            style={{
-              backgroundColor: '#FF3B00',
-              color: '#FFFFFF',
-              padding: '0.5rem 1rem',
-              borderRadius: '6px',
-              textDecoration: 'none',
-              fontSize: '0.875rem',
-              fontWeight: '700'
-            }}
-          >
-            Registrarse
-          </Link>
+        {/* Sesión: invitado ve Iniciar Sesión / Registrarse; con sesión ve su nombre y Cerrar sesión */}
+        <div style={{ display: 'flex', gap: '0.8rem', alignItems: 'center' }}>
+          {usuario ? (
+            <>
+              <span style={{ color: '#A0A0AB', fontSize: '0.875rem' }}>{usuario.nombre}</span>
+              {esAdmin && (
+                <Link
+                  to="/admin"
+                  style={{
+                    backgroundColor: '#FF3B00',
+                    color: '#FFFFFF',
+                    padding: '0.5rem 1rem',
+                    borderRadius: '6px',
+                    textDecoration: 'none',
+                    fontSize: '0.875rem',
+                    fontWeight: '700'
+                  }}
+                >
+                  Panel admin
+                </Link>
+              )}
+              <button
+                type="button"
+                onClick={salir}
+                style={{
+                  color: '#F5F5F8',
+                  backgroundColor: 'transparent',
+                  border: '1px solid #2A2A35',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '6px',
+                  fontSize: '0.875rem',
+                  fontWeight: '600',
+                  cursor: 'pointer'
+                }}
+              >
+                Cerrar sesión
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                style={{
+                  color: '#F5F5F8',
+                  border: '1px solid #2A2A35',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: '600'
+                }}
+              >
+                Iniciar Sesión
+              </Link>
+              <Link
+                to="/registro"
+                style={{
+                  backgroundColor: '#FF3B00',
+                  color: '#FFFFFF',
+                  padding: '0.5rem 1rem',
+                  borderRadius: '6px',
+                  textDecoration: 'none',
+                  fontSize: '0.875rem',
+                  fontWeight: '700'
+                }}
+              >
+                Registrarse
+              </Link>
+            </>
+          )}
         </div>
 
       </div>

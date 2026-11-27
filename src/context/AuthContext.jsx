@@ -1,5 +1,5 @@
-
-
+// src/context/AuthContext.jsx
+// Estado de sesión compartido por toda la app. Se restaura desde localStorage al recargar la página.
 import React, { createContext, useContext, useEffect, useState } from 'react';
 import {
   cerrarSesion as borrarSesion,
@@ -9,7 +9,7 @@ import {
   obtenerSesion
 } from '../services/api';
 
-
+// Valor por defecto: permite usar useAuth() en componentes aislados (por ejemplo, en tests).
 const AuthContext = createContext({
   usuario: null,
   esAdmin: false,
@@ -22,7 +22,7 @@ export const AuthProvider = ({ children }) => {
   const [usuario, setUsuario] = useState(() => obtenerSesion());
   const [sesionExpirada, setSesionExpirada] = useState(false);
 
-
+  // El backend respondió 401: la sesión ya no es válida.
   useEffect(() => {
     const alExpirar = () => {
       setUsuario(null);
@@ -32,7 +32,7 @@ export const AuthProvider = ({ children }) => {
     return () => window.removeEventListener(EVENTO_SESION_EXPIRADA, alExpirar);
   }, []);
 
- 
+  // Cierra la sesión sola cuando vence el token, aunque la persona no haga ninguna petición.
   useEffect(() => {
     if (!usuario?.token) return undefined;
     const espera = Math.max(msHastaExpirar(usuario.token), 0);
@@ -66,4 +66,3 @@ export const AuthProvider = ({ children }) => {
 };
 
 export const useAuth = () => useContext(AuthContext);
-
