@@ -8,7 +8,7 @@ describe('Prueba Unitaria 2: Registro y Validación de RUT', () => {
     // Verificación directa de la función Módulo 11 sin puntos ni guion
     expect(validarRutSinFormato('19.876.543-K')).toBe(false);
     expect(validarRutSinFormato('12345678-9')).toBe(false);
-    expect(validarRutSinFormato('19876543K')).toBe(true);
+    expect(validarRutSinFormato('198765430')).toBe(true);
   });
 
   it('Debe mostrar error en el formulario si se ingresa un RUT con guion', () => {
@@ -20,6 +20,6 @@ describe('Prueba Unitaria 2: Registro y Validación de RUT', () => {
     fireEvent.change(rutInput, { target: { value: '19876543-K' } });
     fireEvent.click(submitBtn);
 
-    expect(screen.getByText(/sin puntos ni guion/i)).toBeInTheDocument();
+    expect(screen.getByText(/debe ingresarse sin puntos ni guion/i)).toBeInTheDocument();
   });
 });
