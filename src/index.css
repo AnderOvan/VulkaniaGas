@@ -1,0 +1,332 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+/* =========================================================
+   VULKANIA — TEMA CORPORATIVO
+   ========================================================= */
+
+:root {
+  /* Fondos */
+  --bg-primary: #0f1012;
+  --bg-secondary: #17181b;
+  --bg-tertiary: #1d1e22;
+
+  /* Vulkania */
+  --vulkania-red: #d93616;
+  --vulkania-orange: #e65a1c;
+
+  /* Texto */
+  --text-primary: #f1f1f1;
+  --text-secondary: #a7a7ad;
+  --text-muted: #777980;
+
+  /* Bordes */
+  --border: #292a2f;
+  --border-hover: #3a3b41;
+
+  /* Tipografía */
+  --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+
+  /* Otros */
+  --radius: 8px;
+}
+
+/* =========================================================
+   BASE
+   ========================================================= */
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  font-family: var(--font-main);
+  font-size: 15px;
+  line-height: 1.5;
+
+  -webkit-font-smoothing: antialiased;
+}
+
+button,
+input,
+select,
+textarea {
+  font-family: inherit;
+}
+
+/* =========================================================
+   BOTONES
+   ========================================================= */
+
+.btn-vulkania {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 11px 20px;
+
+  background: var(--vulkania-red);
+  color: #fff;
+
+  border: 1px solid var(--vulkania-red);
+  border-radius: var(--radius);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-vulkania:hover {
+  background: #bd2e12;
+  border-color: #bd2e12;
+}
+
+.btn-vulkania:active {
+  background: #a9270f;
+}
+
+/* Botón secundario */
+
+.btn-secondary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+
+  padding: 11px 20px;
+
+  background: transparent;
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  font-size: 14px;
+  font-weight: 600;
+
+  cursor: pointer;
+
+  transition:
+    background-color 0.2s ease,
+    border-color 0.2s ease;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-tertiary);
+  border-color: var(--border-hover);
+}
+
+/* =========================================================
+   TARJETAS
+   ========================================================= */
+
+.card-vulkania {
+  background: var(--bg-secondary);
+
+  border: 1px solid var(--border);
+  border-radius: 10px;
+
+  padding: 20px;
+
+  transition: border-color 0.2s ease;
+}
+
+.card-vulkania:hover {
+  border-color: var(--border-hover);
+}
+
+/* =========================================================
+   TÍTULOS
+   ========================================================= */
+
+.text-magma {
+  color: var(--vulkania-red);
+  font-weight: 700;
+}
+
+.title-vulkania {
+  margin: 0;
+
+  color: var(--text-primary);
+
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+}
+
+.subtitle-vulkania {
+  margin-top: 8px;
+
+  color: var(--text-secondary);
+
+  font-size: 15px;
+}
+
+/* =========================================================
+   NAVEGACIÓN
+   ========================================================= */
+
+.navbar-vulkania {
+  height: 64px;
+
+  display: flex;
+  align-items: center;
+
+  padding: 0 32px;
+
+  background: var(--bg-primary);
+
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-link {
+  color: var(--text-secondary);
+
+  text-decoration: none;
+
+  font-size: 14px;
+  font-weight: 500;
+
+  transition: color 0.2s ease;
+}
+
+.nav-link:hover {
+  color: var(--text-primary);
+}
+
+.nav-link.active {
+  color: var(--vulkania-red);
+}
+
+/* =========================================================
+   PRODUCTOS
+   ========================================================= */
+
+.product-name {
+  color: var(--text-primary);
+
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.product-description {
+  color: var(--text-secondary);
+
+  font-size: 14px;
+}
+
+.product-price {
+  color: var(--text-primary);
+
+  font-size: 22px;
+  font-weight: 700;
+}
+
+.product-stock {
+  color: #8fa88f;
+
+  font-size: 13px;
+  font-weight: 500;
+}
+
+/* =========================================================
+   FORMULARIOS
+   ========================================================= */
+
+.input-vulkania {
+  width: 100%;
+
+  padding: 11px 13px;
+
+  background: var(--bg-primary);
+  color: var(--text-primary);
+
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+
+  outline: none;
+
+  transition: border-color 0.2s ease;
+}
+
+.input-vulkania::placeholder {
+  color: var(--text-muted);
+}
+
+.input-vulkania:focus {
+  border-color: var(--vulkania-red);
+}
+
+/* =========================================================
+   ALERTAS
+   ========================================================= */
+
+.alert-vulkania {
+  padding: 12px 16px;
+
+  background: rgba(217, 54, 22, 0.08);
+
+  border: 1px solid rgba(217, 54, 22, 0.3);
+  border-radius: var(--radius);
+
+  color: #e8b4a8;
+
+  font-size: 14px;
+}
+
+/* =========================================================
+   SEPARADORES
+   ========================================================= */
+
+.divider-vulkania {
+  width: 100%;
+  height: 1px;
+
+  background: var(--border);
+
+  border: none;
+}
+
+/* =========================================================
+   CONTENEDOR
+   ========================================================= */
+
+.container-vulkania {
+  width: min(1200px, calc(100% - 40px));
+
+  margin: 0 auto;
+}
+
+/* =========================================================
+   SCROLLBAR
+   ========================================================= */
+
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-primary);
+}
+
+::-webkit-scrollbar-thumb {
+  background: #34353a;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #45464c;
+}
